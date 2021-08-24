@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Http\Requests\Property\Edit;
 use App\Http\Requests\Property\Store;
+use App\Http\Requests\Search;
 use App\Models\Currency;
 use App\Models\Property;
 use Illuminate\Contracts\Foundation\Application;
@@ -21,7 +21,7 @@ class PropertyController extends Controller
 
     /**
      * show currencies and properties on main page
-     * @return Application|Factory|View
+     * @return View
      */
     public function index(): View
     {
@@ -33,7 +33,7 @@ class PropertyController extends Controller
 
     /**
      * create new property
-     * @return Application|Factory|View
+     * @return View
      */
     public function create(): View
     {
@@ -47,7 +47,7 @@ class PropertyController extends Controller
      * @param Store $request
      * @return RedirectResponse
      */
-    public function store(Store  $request): RedirectResponse
+    public function store(Store $request): RedirectResponse
     {
         $property = new Property;
         $property->currency_id = $request->currency_id;
@@ -74,7 +74,7 @@ class PropertyController extends Controller
     /**
      * edit property fields
      * @param int $id
-     * @return Application|Factory|View
+     * @return View
      */
     public function edit(int $id): View
     {
@@ -132,4 +132,66 @@ class PropertyController extends Controller
             ->with('success', 'field deleted successfully.');
     }
 
+    /**
+     * search for a specific field
+     * @param Search $request
+     * @return Application|Factory|View|RedirectResponse
+     */
+    public function search(Search $request): Factory|View|Application|RedirectResponse
+    {
+        $request->flash();
+        $property_currency_name = $request->currency_name;
+        $property_show_name = $request->show_name;
+        $property_has_tag = $request->has_tag;
+
+        if (isset($property_show_name)) {
+            $properties = Property::query()->where('show_name', $property_show_name)
+                ->paginate(1);
+        } else if (isset($property_has_tag)) {
+            $properties = Property::query()->where('has_tag', $property_has_tag)
+                ->paginate(1);
+        } else if (isset($property_currency_name)) {
+            $id = Currency::query()->where('currency_name', $property_currency_name)->first()->id;
+            if ($id == null) {
+                return redirect()->route('index.php')
+                    ->with('error', 'currency not found');
+            }
+            $properties = Property::query()->where('currency_id', $id)
+                ->paginate(1);
+            return view('products.index', compact('properties'));
+        } else {
+            return redirect()->route('property.index')
+                ->with('error', 'nothing entered');
+        }
+        return view('products.index', ['properties' => $properties]);
+    }
+
+    /**
+     * applies filter to shown results
+     * @param Search $request
+     * @return RedirectResponse|View
+     */
+    public function sort(Search $request): RedirectResponse|View
+    {
+        $request->flash();
+        $sorts = $request->sorts;
+
+        switch ($sorts) {
+            case 'show_order':
+                $properties = Property::query()->orderBy('show_order', 'DESC')
+                    ->paginate(1);
+                return view('products.index', ['properties' => $properties]);
+            case 'withdraw':
+                $properties = Property::query()->orderBy('withdraw', 'DESC')
+                    ->paginate(1);
+                return view('products.index', ['properties' => $properties]);
+            case 'deposit':
+                $properties = Property::query()->orderBy('deposit', 'DESC')
+                    ->paginate(1);
+                return view('products.index', ['properties' => $properties]);
+            default:
+                return redirect()->route('property.index')
+                    ->with('error', 'nothing entered');
+        }
+    }
 }

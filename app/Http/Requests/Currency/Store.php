@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Currency;
 
 use Illuminate\Foundation\Http\FormRequest;
+use JetBrains\PhpStorm\ArrayShape;
 
 class Store extends FormRequest
 {
@@ -11,7 +12,7 @@ class Store extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,7 +22,7 @@ class Store extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    #[ArrayShape(['currency_name' => "string"])] public function rules()
     {
         return [
             //
