@@ -23,11 +23,12 @@ Route::name('property.')->group(function () {
         Route::post('/update/{id}', [PropertyController::class, 'update'])->name('update');
         Route::get('/edit/{id}', [PropertyController::class, 'edit'])->name('edit');
         Route::get('/destroy/{id}', [PropertyController::class, 'destroy'])->name('destroy');
+        Route::get('/search', [PropertyController::class ,'search'])->name('search');
+        Route::get('/sort', [PropertyController::class, 'sort'])->name('sort');
     });
 });
 
 Route::prefix('currency')->name('currency.')->group(function () {
-
     Route::get('/show', [CurrencyController::class, 'show'])->name('show');
     Route::get('/create', [CurrencyController::class, 'create'])->name('create');
     Route::post('/store', [CurrencyController::class, 'store'])->name('store');

@@ -21,7 +21,7 @@ class CurrencyController extends Controller
 {
     /**
      *home page, shows currencies and its properties
-     * @return Application|Factory|View
+     * @return View
      */
     public function show(): View
     {
@@ -31,7 +31,7 @@ class CurrencyController extends Controller
 
     /**
      * creates new currency
-     * @return Application|Factory|View
+     * @return View
      */
     public function create(): View
     {
@@ -59,7 +59,7 @@ class CurrencyController extends Controller
     /**
      * edit currency fields
      * @param int $id
-     * @return Application|Factory|View
+     * @return View
      */
     public function edit(int $id): View
     {

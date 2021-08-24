@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Currency;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use JetBrains\PhpStorm\ArrayShape;
 
-class Edit extends FormRequest
+class Sort extends FormRequest
 {
-
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,10 +22,12 @@ class Edit extends FormRequest
      *
      * @return array
      */
-    #[ArrayShape(['currency_name' => "string"])] public function rules()
+    #[ArrayShape(['show_order' => "string", 'withdraw' => "string", 'deposit' => "string"])] public function rules(): array
     {
         return [
-            'currency_name'=>'min:3|string'
+            'show_order'=>'nullable|integer',
+            'withdraw'=>'nullable|numeric|min:1000',
+            'deposit'=>'nullable|numeric|min:1000'
         ];
     }
 }
