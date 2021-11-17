@@ -51,7 +51,6 @@ And main page at http://localhost:8000/currency/show
     php artisan serve
 
 **Make sure you set the correct database connection information before running the migrations** [Environment variables](#environment-variables)
-Open your .env file and change the database name (DB_DATABASE) to whatever you have, username (DB_USERNAME) and password (DB_PASSWORD) field correspond to your configuration.
 
 If any changes were made, run
 
