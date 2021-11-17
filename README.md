@@ -50,7 +50,7 @@ And main page at http://localhost:8000/currency/show
     php artisan migrate
     php artisan serve
 
-**Make sure you set the correct database connection information before running the migrations** [Environment variables](#environment-variables)
+**Make sure you set the correct database connection information before running the migrations** [Environment variables]
 
 If any changes were made, run
 
